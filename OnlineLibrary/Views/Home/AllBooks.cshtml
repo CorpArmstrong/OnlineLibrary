@@ -1,0 +1,56 @@
+﻿@model IList<OnlineLibrary.Models.Book>
+
+@{
+    ViewBag.Title = "All Books";
+}
+
+<h2>All Books:</h2>
+<p>@Html.ActionLink("Show all books", "/AllBooks", new { showAllBooks = true }, new { @class = "btn btn-primary btn-lg" })
+   @Html.ActionLink("Show books available", "/AllBooks", new { showAllBooks = false }, new { @class = "btn btn-primary btn-lg" })</p>
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+
+<div style="width:100%;float:left;padding-bottom:50px;">
+    @{
+        if (Model != null)
+        {
+            var grid = new WebGrid(Model, canPage: true, canSort:true, rowsPerPage: 50, selectionFieldName: "selectedRow", ajaxUpdateContainerId: "gridContent");
+            grid.Pager(WebGridPagerModes.NextPrevious);
+
+            @grid.GetHtml(tableStyle: "table table-responsive table-bordered",
+            headerStyle: "",
+            alternatingRowStyle: "webgrid-alternating-row",
+            selectedRowStyle: "webgrid-row-style",
+            columns:
+             grid.Columns(
+            grid.Column("BookID"),
+            grid.Column("Picture", style: "col2", format: @<text><img src="@item.ImageUrl" width="100" height="100" /></text>),
+            grid.Column("Title", style: "col2", format: @<text><span id="Title" class="display-mode">@item.Name</span></text>),
+            grid.Column("Publish date", style: "col2", format: @<text><span id="PublishDate" class="display-mode">@item.PublishDate.ToShortDateString()</span></text>),
+            grid.Column("Genre", style: "col2", format: @<text><span id="Genre" class="display-mode">@item.Genre</span></text>),
+            grid.Column("Real Quantity", style: "col2", format: @<text><span id="RealQuantity" class="display-mode">@item.RealQuantity</span></text>),
+            grid.Column("Action", style: "col1", format: @<text><span id="takeSpan" class="display-mode">
+
+                        @if (!item.IsBookTaken)
+                        {
+                            <button class="btn btn-default take-item display-mode" id="@item.BookID">Take book</button>
+                        }
+                        else
+                        {
+                            @:<span id="IsBookTaken" class="display-mode" style="display: none">Taken</span>
+                        }
+            </span></text>)))
+    }
+}
+</div>
+
+@section Scripts
+{
+    <script src="@Url.Content("~/Scripts/jquery-1.10.2.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/bootstrap.min.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/allbooks_table_events.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/getparams.js")" type="text/javascript"></script>
+
+    <link href="~/Content/bootstrap.css" rel="stylesheet" />
+    <link href="~/Content/table_styles.css" rel="stylesheet" />
+}

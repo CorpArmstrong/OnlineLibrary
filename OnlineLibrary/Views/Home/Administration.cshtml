@@ -1,0 +1,51 @@
+﻿@model ICollection<OnlineLibrary.Models.Book>
+
+@{
+    ViewBag.Title = "Administration";
+}
+
+<h4>@Html.ActionLink("Add new book", "AddNewBook")</h4>
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+
+<div style="width:100%;float:left;padding-bottom:50px;" id="webGrid">
+    @{
+        if (Model != null)
+        {
+            var grid = new WebGrid(Model, canPage: true, canSort: true, rowsPerPage: 50, selectionFieldName: "selectedRow", ajaxUpdateContainerId: "gridContent");
+            grid.Pager(WebGridPagerModes.NextPrevious);
+
+            @grid.GetHtml(tableStyle: "table table-responsive table-bordered",
+            headerStyle: "",
+            alternatingRowStyle: "webgrid-alternating-row",
+            selectedRowStyle: "webgrid-row-style",
+            columns:
+             grid.Columns(
+            grid.Column("BookID"),
+            grid.Column("Picture", style: "col2", format: @<text><img src="@item.ImageUrl" width="100" height="100" /></text>),
+            grid.Column("Title", style: "col2", format: @<text><span id="Title" class="display-mode">@item.Name</span></text>),
+            grid.Column("Publish date", style: "col2", format: @<text><span id="PublishDate" class="display-mode">@item.PublishDate</span></text>),
+            grid.Column("Genre", style: "col2", format: @<text><span id="Genre" class="display-mode">@item.Genre</span></text>),
+            grid.Column("Norm Quantity", style: "col2", format: @<text><span id="NormQuantity" class="display-mode">@item.NormQuantity</span>@Html.TextBox("NormQuantity-Edit", (int)item.NormQuantity, new { @class = "edit-mode form-control" })</text>),
+            grid.Column("Real Quantity", style: "col2", format: @<text><span id="RealQuantity" class="display-mode">@item.RealQuantity</span></text>),
+            grid.Column("Action", style: "col1", format: @<text>
+                    <div style="padding-left:20px;">
+                        <button class="btn btn-default edit-item display-mode" id="@item.BookID">Edit</button>
+                        <button class="btn btn-default display-mode delete-item" id="@item.BookID">Delete</button>
+                        <button class="btn btn-default save-item edit-mode" id="@item.BookID">Save</button>
+                        <button class="btn btn-default cancel-item edit-mode" id="@item.BookID">Cancel</button>
+                    </div>
+            </text>)))
+        }
+    }
+</div>
+
+@section Scripts
+{
+    <script src="~/Scripts/jquery-1.10.2.js"></script>
+    <script src="~/Scripts/bootstrap.min.js"></script>
+    <script src="~/Scripts/administration_table_events.js"></script>
+
+    <link href="~/Content/bootstrap.css" rel="stylesheet" />
+    <link href="~/Content/table_styles.css" rel="stylesheet" />
+}

@@ -1,0 +1,62 @@
+﻿@model ICollection<OnlineLibrary.Models.UserBook>
+@{
+    ViewBag.Title = "My Account";
+}
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+
+<div style="width:100%;float:left;padding-bottom:50px;" id="mainGrid">
+    <h2>Books you have:</h2>
+    @{
+        if (Model != null)
+        {
+            var grid = new WebGrid(Model, canPage: true, canSort: true, rowsPerPage: 50, selectionFieldName: "selectedRow", ajaxUpdateContainerId: "gridContent");
+            grid.Pager(WebGridPagerModes.NextPrevious);
+
+            @grid.GetHtml(tableStyle: "table table-responsive table-bordered",
+            headerStyle: "",
+            alternatingRowStyle: "webgrid-alternating-row",
+            selectedRowStyle: "webgrid-row-style",
+            columns:
+             grid.Columns(
+            grid.Column("BookID"),
+            grid.Column("Picture", style: "col2", format: @<text><img src="@item.ImageUrl" width="100" height="100" /></text>),
+            grid.Column("Title", style: "col2", format: @<text><span id="Title" class="display-mode">@item.Name</span></text>),
+            grid.Column("Issue date", style: "col2", format: @<text><span id="IssueDate" class="display-mode">@item.IssueDate</span></text>),
+            grid.Column("Return date", style: "col2", format: @<text><span id="ReturnDate" class="display-mode">
+
+                        @if (item.ReturnDate == null)
+                        {
+                            @:-
+                        }
+                        else
+                        {
+                            @item.ReturnDate
+                        }
+                        
+                    </span></text>),
+                 
+                 grid.Column("Action", style: "col2", format:
+                @<text><span id="ReturnAction" class="display-mode">
+
+                        @if (item.ReturnDate == null)
+                        {
+                            <button class="btn btn-default return-item edit-mode" id="@item.BookID">Return book</button>
+                        }
+                    </span></text>)
+
+        ))
+    }
+}
+</div>
+
+@section Scripts
+{
+    <script src="~/Scripts/jquery-1.10.2.js"></script>
+    <script src="~/Scripts/bootstrap.min.js"></script>
+    <script src="~/Scripts/myaccount_table_events.js"></script>
+    <script src="~/Scripts/getparams.js"></script>
+
+    <link href="~/Content/bootstrap.css" rel="stylesheet" />
+    <link href="~/Content/table_styles.css" rel="stylesheet" />
+}

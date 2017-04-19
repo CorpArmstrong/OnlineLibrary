@@ -21,11 +21,20 @@ namespace OnlineLibrary
 
             bundles.Add(new ScriptBundle("~/bundles/bootstrap").Include(
                       "~/Scripts/bootstrap.js",
-                      "~/Scripts/respond.js"));
+                      "~/Scripts/respond.js"
+                      //"~/Scripts/administration_table_events.js",
+                      //"~/Scripts/allbooks_events.js",
+                      //"~/Scripts/myaccount_table_events.js",
+                      //"~/Scripts/getparams.js"
+                      ));
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap.css",
-                      "~/Content/site.css"));
+                      "~/Content/site.css",
+                      "~/Content/grid_styles.css",
+                      "~/Content/form_styles.css",
+                      "~/Content/table_styles.css"
+                      ));
         }
     }
 }

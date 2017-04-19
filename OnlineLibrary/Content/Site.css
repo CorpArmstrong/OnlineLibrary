@@ -22,3 +22,17 @@ select,
 textarea {
     max-width: 280px;
 }
+
+#main
+{
+  line-height: 400px;
+  text-align:center; 
+  vertical-align:middle;
+}
+
+#frm
+{
+  display: inline-block;
+  vertical-align: middle;
+  line-height: 14px; 
+}
